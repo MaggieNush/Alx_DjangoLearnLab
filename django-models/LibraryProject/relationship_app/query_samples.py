@@ -53,7 +53,7 @@ def list_all_books_in_library(library_name='City Library'):
 def retrieve_librarian_for_library(library_name='City Library'): # Add library_name as an argument with a default
     """Retrieve librarian for library"""
     try:
-        library = Library.objects.get(library=library)
+        library = Librarian.objects.get(library=library)
         librarian = library.librarian
 
         print(f"Librarian for {library.name}: {librarian.name}")
