@@ -6,4 +6,6 @@ from .models import UserProfile
 @receiver(post_save, sender=User)
 def create_user_profile(sender, instance, created, **kwargs):
     if created:
-        UserProfile.objects.create(user=instance, role='Member')  # default role
+        # Check if profile already exists
+        if not UserProfile.objects.filter(user=instance).exists():
+            UserProfile.objects.create(user=instance, role='Member')
