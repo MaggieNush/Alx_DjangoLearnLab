@@ -7,54 +7,33 @@ from .models import Book, Library
 from .models import UserProfile
 from .forms import BookForm  
 from django.contrib.auth.decorators import permission_required
+from django.contrib.auth.decorators import login_required, user_passes_test
+from django.http import HttpResponseForbidden
 
 
 # Role check functions
 def check_admin(user):
-    """Verify user has Admin role"""
     return user.is_authenticated and hasattr(user, 'userprofile') and user.userprofile.role == 'Admin'
 
 def check_librarian(user):
-    """Verify user has Librarian role"""
     return user.is_authenticated and hasattr(user, 'userprofile') and user.userprofile.role == 'Librarian'
 
 def check_member(user):
-    """Verify user has Member role"""
     return user.is_authenticated and hasattr(user, 'userprofile') and user.userprofile.role == 'Member'
 
-# Admin View (Must be named exactly 'admin_view')
+# Admin View
 @login_required
 @user_passes_test(check_admin)
 def admin_view(request):
-    """
-    View that only Admin users can access.
-    The checker specifically looks for:
-    1. The exact name 'admin_view'
-    2. Both decorators
-    3. Proper role checking
-    """
-    # Additional explicit check (some checkers require this)
-    if not check_admin(request.user):
-        raise PermissionDenied("Admin access required")
-    
-    context = {
-        'title': 'Admin Dashboard',
-        'content': 'This page is restricted to Admin users only.',
-        'features': [
-            'User management',
-            'System configuration',
-            'Database administration'
-        ]
-    }
-    return render(request, 'admin_view.html', context)
+    return render(request, 'admin_view.html')
 
-# Librarian View (for completeness)
+# Librarian View
 @login_required
 @user_passes_test(check_librarian)
 def librarian_view(request):
     return render(request, 'librarian_view.html')
 
-# Member View (for completeness)
+# Member View
 @login_required
 @user_passes_test(check_member)
 def member_view(request):
