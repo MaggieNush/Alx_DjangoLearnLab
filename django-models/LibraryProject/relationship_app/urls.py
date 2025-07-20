@@ -1,9 +1,7 @@
 from django.urls import path
-from . import views # Import views from the current app
+from . import views # Import views
 from django.contrib.auth.views import LoginView, LogoutView
-from relationship_app.admin_view import admin_view
-from LibraryProject.relationship_app.librarian_view import librarian_view
-from relationship_app.member_view import member_view
+
 
 app_name = 'relationship_app' 
 
@@ -30,7 +28,10 @@ urlpatterns = [
     # We specify a template_name for the logged-out confirmation page.
     path('logout/', LogoutView.as_view(template_name='relationship_app/registration/logged_out.html'), name='logout'),
 
-    path('admin-dashboard/', admin_view, name='admin_dashboard'),
-    path('librarian-view/', librarian_view, name='librarian_view'),
-    path('member-view/', member_view, name='member_view'),
+    path('admin/', views.admin_view, name='admin_view'),
+    
+    path('librarian/', views.librarian_view, name='librarian_view'),
+    
+    path('member/', views.member_view, name='member_view'),
+
 ]
