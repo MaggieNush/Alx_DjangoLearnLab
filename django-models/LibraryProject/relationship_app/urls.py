@@ -1,7 +1,7 @@
 from django.urls import path
 from . import views # Import views
 from django.contrib.auth.views import LoginView, LogoutView
-from .admin_view import admin_view
+from .views.admin_view import admin_view
 
 app_name = 'relationship_app' 
 
