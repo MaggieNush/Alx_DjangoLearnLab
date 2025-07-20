@@ -18,7 +18,7 @@ def query_all_books_by_author(author_name='Stephen King'):
     """Query all books by a specific author"""
     try:
         author = Author.objects.get(name=author_name) 
-        books = author.book_set.all() 
+        books = Book.objects.filter(author=author) 
 
         print(f"Books by {author.name}:")
         if books: # Check if there are any books
