@@ -1,5 +1,6 @@
 from django.urls import path
 from . import views # Import views from the current app
+from django.contrib.auth.views import LoginView, LogoutView
 
 app_name = 'relationship_app' 
 
@@ -8,6 +9,21 @@ urlpatterns = [
     path('books/', views.all_books_list_view, name='books_list'),
 
     # URL for the class-based view to show individual library details
-    # <int:pk> captures the primary key from the URL and passes it to the view
     path('libraries/<int:pk>/', views.LibraryDetailView.as_view(), name='library_detail'),
+    
+    path('books/', views.all_books_list_view, name='books_list'),
+    path('libraries/<int:pk>/', views.LibraryDetailView.as_view(), name='library_detail'),
+
+    # --- NEW: Authentication URLs ---
+
+    # URL for user registration (will be a custom function-based view)
+    path('register/', views.register, name='register'),
+
+    # URL for user login (using Django's built-in LoginView)
+    # We specify a template_name for the login form.
+    path('login/', LoginView.as_view(template_name='relationship_app/registration/login.html'), name='login'),
+
+    # URL for user logout (using Django's built-in LogoutView)
+    # We specify a template_name for the logged-out confirmation page.
+    path('logout/', LogoutView.as_view(template_name='relationship_app/registration/logged_out.html'), name='logout'),
 ]
