@@ -1,9 +1,9 @@
 from django.urls import path
 from . import views # Import views from the current app
 from django.contrib.auth.views import LoginView, LogoutView
-from relationship_app.admin_view import admin_dashboard
-from relationship_app.libarian_view import librarian_dashboard
-from relationship_app.member_view import member_dashboard
+from relationship_app.admin_view import admin_view
+from relationship_app.libarian_view import librarian_view
+from relationship_app.member_view import member_view
 
 app_name = 'relationship_app' 
 
