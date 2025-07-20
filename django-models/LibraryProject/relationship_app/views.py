@@ -1,7 +1,9 @@
 # relationship_app/views.py
 from django.shortcuts import render, get_object_or_404
-from django.views.generic import DetailView # Correctly using DetailView for a specific item
-from .models import Book, Library # Import your models
+from django.views.generic import DetailView 
+from .models import Book, Library 
+from django.contrib.auth import login
+from django.contrib.auth.forms import UserCreationForm
 
 # --- Function-based View: List All Books ---
 def all_books_list_view(request):
