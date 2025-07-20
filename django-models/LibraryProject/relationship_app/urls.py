@@ -1,7 +1,7 @@
 from django.urls import path
 from . import views # Import views
 from django.contrib.auth.views import LoginView, LogoutView
-
+from .admin_view import admin_view
 
 app_name = 'relationship_app' 
 
@@ -28,10 +28,10 @@ urlpatterns = [
     # We specify a template_name for the logged-out confirmation page.
     path('logout/', LogoutView.as_view(template_name='relationship_app/registration/logged_out.html'), name='logout'),
 
-    path('admin-dashboard/', views.admin_view, name='admin_view'),
+    path('admin-dashboard/', admin_view, name='admin_dashboard'),
 
-    path('librarian/', views.librarian_view, name='librarian_view'),
+    # path('librarian/', librarian_view, name='librarian_view'),
     
-    path('member/', views.member_view, name='member_view'),
+    # path('member/', member_view, name='member_view'),
 
 ]

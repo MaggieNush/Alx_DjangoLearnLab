@@ -1,11 +1,16 @@
+<!-- templates/admin_dashboard.html -->
 <!DOCTYPE html>
 <html>
 <head>
     <title>Admin Dashboard</title>
 </head>
 <body>
-    <h1>Admin Dashboard</h1>
-    <p>{{ admin_content }}</p>
-    <p>You are viewing this because you have Admin privileges.</p>
+    <h1>{{ message }}</h1>
+    <h3>Admin Privileges:</h3>
+    <ul>
+        {% for feature in features %}
+        <li>{{ feature }}</li>
+        {% endfor %}
+    </ul>
 </body>
 </html>
