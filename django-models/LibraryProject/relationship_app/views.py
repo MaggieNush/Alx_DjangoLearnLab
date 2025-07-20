@@ -89,9 +89,10 @@ class LibraryDetailView(DetailView):
     #     # Example: If you wanted to prefetch books for every library detail view
     #     return Library.objects.all().prefetch_related('books__author')
 
-    # get_context_data is optional, used if you need to add extra context beyond the single object.
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         # Add any extra context specific to a library's details page
         context['current_year'] = 2025 # Just an example of extra context
         return context
+    
+
