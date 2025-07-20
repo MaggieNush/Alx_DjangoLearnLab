@@ -30,7 +30,7 @@ urlpatterns = [
     # We specify a template_name for the logged-out confirmation page.
     path('logout/', LogoutView.as_view(template_name='relationship_app/registration/logged_out.html'), name='logout'),
 
-    path('admin-view/', admin_view, name='admin_view'),
+    path('admin-dashboard/', admin_view, name='admin_dashboard'),
     path('librarian-view/', librarian_view, name='librarian_view'),
     path('member-view/', member_view, name='member_view'),
 ]
