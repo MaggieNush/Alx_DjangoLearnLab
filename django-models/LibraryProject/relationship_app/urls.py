@@ -18,7 +18,7 @@ urlpatterns = [
     # --- NEW: Authentication URLs ---
 
     # URL for user registration (will be a custom function-based view)
-    path('register/', views.register, name='register'),
+    # path('register/', views.register, name='register'),
 
     # URL for user login (using Django's built-in LoginView)
     # We specify a template_name for the login form.
