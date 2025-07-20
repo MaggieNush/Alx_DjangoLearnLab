@@ -4,6 +4,7 @@ from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth import login
 from django.contrib.auth.decorators import login_required, user_passes_test
 from .models import UserProfile
+from django.contrib import messages
 
 from .models import Book, Library
 
@@ -57,6 +58,7 @@ def register_view(request):
     return render(request, 'relationship_app/register.html', {'form': form})
 
 def check_admin(user):
+    # Check if user is authenticated and has admin role
     return user.is_authenticated and hasattr(user, 'userprofile') and user.userprofile.role == 'Admin'
 
 def check_librarian(user):
@@ -68,7 +70,11 @@ def check_member(user):
 @login_required
 @user_passes_test(check_admin)
 def admin_view(request):
-    return render(request, 'admin_view.html')
+    # Add any admin-specific context data here
+    context = {
+        'admin_content': 'This is exclusive content for Admin users only.',
+    }
+    return render(request, 'admin_view.html', context)
 
 @login_required
 @user_passes_test(check_librarian)
