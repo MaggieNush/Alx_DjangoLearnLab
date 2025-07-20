@@ -2,12 +2,11 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.views.generic import DetailView
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth import login
-from django.contrib.auth.decorators import login_required, user_passes_test
 from django.core.exceptions import PermissionDenied
 from .models import Book, Library
 from .models import UserProfile
-from django.contrib.auth.decorators import login_required, permission_required
 from .forms import BookForm  
+from django.contrib.auth.decorators import permission_required
 
 
 # Role check functions
