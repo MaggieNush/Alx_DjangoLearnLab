@@ -25,19 +25,19 @@ def check_member(user):
 @login_required
 @user_passes_test(check_admin)
 def admin_view(request):
-    return render(request, 'admin_view.html')
+    return render(request, 'relationship_app/admin_view.html')
 
 # Librarian View
 @login_required
 @user_passes_test(check_librarian)
 def librarian_view(request):
-    return render(request, 'librarian_view.html')
+    return render(request, 'relationship_app/librarian_view.html')
 
 # Member View
 @login_required
 @user_passes_test(check_member)
 def member_view(request):
-    return render(request, 'member_view.html')
+    return render(request, 'relationship_app/member_view.html')
 
 # --- Function-based View: List All Books ---
 def all_books_list_view(request):
