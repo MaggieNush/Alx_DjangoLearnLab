@@ -12,6 +12,7 @@ from django.http import HttpResponseForbidden
 from .models import Library
 from django.views.generic.detail import DetailView
 
+
 # Role check functions
 def check_admin(user):
     return user.is_authenticated and hasattr(user, 'userprofile') and user.userprofile.role == 'Admin'
