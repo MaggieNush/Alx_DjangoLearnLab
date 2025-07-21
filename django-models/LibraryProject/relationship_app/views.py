@@ -9,7 +9,7 @@ from .forms import BookForm
 from django.contrib.auth.decorators import permission_required
 from django.contrib.auth.decorators import login_required, user_passes_test
 from django.http import HttpResponseForbidden
-
+from .models import Library
 
 # Role check functions
 def check_admin(user):
