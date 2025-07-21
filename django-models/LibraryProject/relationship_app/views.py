@@ -10,6 +10,7 @@ from django.contrib.auth.decorators import permission_required
 from django.contrib.auth.decorators import login_required, user_passes_test
 from django.http import HttpResponseForbidden
 from .models import Library
+from django.views.generic.detail import DetailView
 
 # Role check functions
 def check_admin(user):
