@@ -23,7 +23,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-r#jg1^m@!i2rjmd6t7t24ng_im_t(0+jg5refv_m2j!lt!36!1'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = []
 
@@ -52,7 +52,11 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'csp.middleware.CSPMiddleware',
 ]
+
+CSP_DEFAULT_SRC = ["'self'"]  # Only allow stuff from your own site
+CSP_SCRIPT_SRC = ["'self'"]   # Only allow scripts from your site
 
 ROOT_URLCONF = 'LibraryProject.urls'
 
@@ -85,6 +89,14 @@ DATABASES = {
     }
 }
 
+# Browser protections
+SECURE_BROWSER_XSS_FILTER = True  # Stops sneaky scripts
+X_FRAME_OPTIONS = 'DENY'  # Prevents others from putting your site in a frame
+SECURE_CONTENT_TYPE_NOSNIFF = True  # Makes sure browsers don't guess content types
+
+# Using secure cookies to prevent interception
+CSRF_COOKIE_SECURE = True  # Only sends CSRF cookies over HTTPS
+SESSION_COOKIE_SECURE = True  # Only sends session cookies over HTTPS
 
 # Password validation
 # https://docs.djangoproject.com/en/5.1/ref/settings/#auth-password-validators
@@ -126,3 +138,7 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+# To allow access to file uploads
+MEDIA_URL = '/media/'
+MEDIA_ROOT = BASE_DIR / 'media'

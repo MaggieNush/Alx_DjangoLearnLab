@@ -11,26 +11,17 @@ admin.site.register(Book, BookAdmin)
 
 class CustomUserAdmin(UserAdmin):
     model = CustomUser
-
-    list_display = ['username', 'email', 'is_staff', 'date_of_birth', 'profile_photo']
-
+    list_display = ['username', 'email', 'is_staff', 'date_of_birth']
+    
     fieldsets = UserAdmin.fieldsets + (
         ('Custom Fields', {
-            'fields': (
-                'bio',
-                'date_of_birth',
-                'profile_photo',
-            )
+            'fields': ('date_of_birth', 'profile_photo')
         }),
     )
-
+    
     add_fieldsets = UserAdmin.add_fieldsets + (
         ('Custom Fields', {
-            'fields': (
-                'bio',
-                'date_of_birth',
-                'profile_photo',
-            )
+            'fields': ('date_of_birth', 'profile_photo')
         }),
     )
 
