@@ -1,9 +1,7 @@
 from django.contrib import admin
-from .models import Book
 from django.contrib.auth.admin import UserAdmin
-from .models import CustomUser
+from .models import CustomUser, Book
 
-# Register your models here.
 class BookAdmin(admin.ModelAdmin):
     list_display = ('title', 'author', 'publication_year')
     list_filter = ('title', 'author', 'publication_year')
@@ -11,13 +9,29 @@ class BookAdmin(admin.ModelAdmin):
 
 admin.site.register(Book, BookAdmin)
 
-
 class CustomUserAdmin(UserAdmin):
+    model = CustomUser
+
+    list_display = ['username', 'email', 'is_staff', 'date_of_birth', 'profile_photo']
+
     fieldsets = UserAdmin.fieldsets + (
-        ('Custom Fields', {'fields': ('bio',)}),
+        ('Custom Fields', {
+            'fields': (
+                'bio',
+                'date_of_birth',
+                'profile_photo',
+            )
+        }),
     )
+
     add_fieldsets = UserAdmin.add_fieldsets + (
-        ('Custom Fields', {'fields': ('bio',)}),
+        ('Custom Fields', {
+            'fields': (
+                'bio',
+                'date_of_birth',
+                'profile_photo',
+            )
+        }),
     )
 
 admin.site.register(CustomUser, CustomUserAdmin)
