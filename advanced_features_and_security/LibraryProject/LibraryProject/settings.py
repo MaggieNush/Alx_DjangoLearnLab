@@ -94,6 +94,10 @@ SECURE_BROWSER_XSS_FILTER = True  # Stops sneaky scripts
 X_FRAME_OPTIONS = 'DENY'  # Prevents others from putting your site in a frame
 SECURE_CONTENT_TYPE_NOSNIFF = True  # Makes sure browsers don't guess content types
 
+# Implement secure headers
+X_FRAME_OPTIONS = "DENY" # Prevents site from being framed and against clickjacking
+
+
 # Using secure cookies to prevent interception
 CSRF_COOKIE_SECURE = True  # Only sends CSRF cookies over HTTPS
 SESSION_COOKIE_SECURE = True  # Only sends session cookies over HTTPS
@@ -142,3 +146,9 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 # To allow access to file uploads
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
+
+# Configure Django for HTTPS support
+SECURE_SSL_REDIRECT = True # Redirects all non-HTTPS requests to HTTPS
+SECURE_HSTS_SECONDS = '31536000' # Browsers only access the site via HTTPS over a specified time
+SECURE_HSTS_INCLUDE_SUBDOMAINS = True # Include all subdomains in the HSTS policy
+SECURE_HSTS_PRELOAD = True # Allow preloading
