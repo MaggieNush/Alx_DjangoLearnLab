@@ -27,14 +27,9 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
-MEDIA_URL = '/media/'
-
-MEDIA_ROOT = BASE_DIR / 'media'
-
-
 # AUTH_USER_MODEL integration
-AUTH_USER_MODEL = "bookshelf.CustomUser"
 
+AUTH_USER_MODEL = "bookshelf.CustomUser"
 
 # Application definition
 
