@@ -12,7 +12,7 @@ class CustomUser(AbstractUser):
     date_of_birth = models.DateField
     profile_photo = models.ImageField
 
-class CustomManagerModel(BaseUserManager):
+class CustomUserManager(BaseUserManager):
     def create_user(self, date_of_birth, profile_photo, **extra_fields):
         """
         create and save users with the given DOB and profile photo
