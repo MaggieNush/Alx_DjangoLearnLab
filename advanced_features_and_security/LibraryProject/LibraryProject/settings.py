@@ -93,6 +93,8 @@ DATABASES = {
 SECURE_BROWSER_XSS_FILTER = True  # Stops sneaky scripts
 X_FRAME_OPTIONS = 'DENY'  # Prevents others from putting your site in a frame
 SECURE_CONTENT_TYPE_NOSNIFF = True  # Makes sure browsers don't guess content types
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https') # Secure headers implementation
+
 
 # Implement secure headers
 X_FRAME_OPTIONS = "DENY" # Prevents site from being framed and against clickjacking
