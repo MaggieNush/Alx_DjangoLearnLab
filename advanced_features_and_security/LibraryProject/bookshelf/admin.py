@@ -12,7 +12,7 @@ class BookAdmin(admin.ModelAdmin):
 admin.site.register(Book, BookAdmin)
 
 
-class ModelAdmin(UserAdmin):
+class CustomUserAdmin(UserAdmin):
     fieldsets = UserAdmin.fieldsets + (
         ('Custom Fields', {'field': ('bio',)}),
     )
@@ -20,4 +20,4 @@ class ModelAdmin(UserAdmin):
         ('Custom Fields', {'fields': ('bio',)}),
     )
 
-admin.site.register(CustomUser, ModelAdmin)
+admin.site.register(CustomUser, CustomUserAdmin)
