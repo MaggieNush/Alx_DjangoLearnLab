@@ -14,7 +14,7 @@ admin.site.register(Book, BookAdmin)
 
 class CustomUserAdmin(UserAdmin):
     fieldsets = UserAdmin.fieldsets + (
-        ('Custom Fields', {'field': ('bio',)}),
+        ('Custom Fields', {'fields': ('bio',)}),
     )
     add_fieldsets = UserAdmin.add_fieldsets + (
         ('Custom Fields', {'fields': ('bio',)}),
