@@ -1,7 +1,9 @@
-from rest_framework import generics
-from .serializers import BookSerializer
-from .models import Book
+from django.contrib import admin
+from django.urls import path
+from api.views import BookListCreateAPIView
 
-class BookListCreateAPIView(generics.ListAPIView):
-    queryset=Book.objects.all()
-    serializer_class=BookSerializer
+urlpatterns = [
+    path('admin/', admin.site.urls),
+    path('api/books/', BookListCreateAPIView.as_view(),
+name="book_list_view")
+]
