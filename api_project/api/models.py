@@ -1,11 +1,7 @@
 from django.db import models
 
-class Movie(models.Model):
+class Book(models.Model):
     title=models.CharField(max_length=200)
-    producer=models.CharField(max_length=100)
-    release_date=models.DateField()
+    author=models.CharField(max_length=100)
 
-class Actor(models.Model):
-    name=models.CharField(max_length=100)
-    age=models.BigIntegerField()
     
