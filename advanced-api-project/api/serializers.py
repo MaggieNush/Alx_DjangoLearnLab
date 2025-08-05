@@ -6,6 +6,8 @@ class AuthorSerializer(serializers.ModelSerializer):
     """
     Serializer for the Author model.
     """
+    books = serializers.StringRelatedField(many=True, read_only=True)
+
     class Meta:
         model = Author
         fields = ['name', 'books']
@@ -15,7 +17,7 @@ class BookSerializer(serializers.ModelSerializer):
     Serializer for the Book model, including validation for the published year.
     This serializer incudes a nested AuthorSerializer to represent the author of the book.
     """
-    author = AuthorSerializer(read_only=True, many=True)
+    author = AuthorSerializer(read_only=True)
 
     class Meta:
         model = Book
