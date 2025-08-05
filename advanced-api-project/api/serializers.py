@@ -15,7 +15,7 @@ class BookSerializer(serializers.ModelSerializer):
     Serializer for the Book model, including validation for the published year.
     This serializer incudes a nested AuthorSerializer to represent the author of the book.
     """
-    author = AuthorSerializer(read_only=True)
+    author = AuthorSerializer(read_only=True, many=True)
 
     class Meta:
         model = Book
