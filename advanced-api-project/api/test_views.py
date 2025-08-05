@@ -1,12 +1,24 @@
 from django.test import APITestCase
+from huggingface_hub import User
 from rest_framework.test import APIClient
 from rest_framework import status
+from api.models import Book
 
 class BookListViewTestCase(APITestCase):
     def setUp(self):
+        """
+        This logs in the user before making requests.
+        """
         self.client = APIClient()
+        self.user = User.objects.create_user(username='testuser', password='testpass')
+        self.client.login(username='testuser', password='testpass')  # This logs in the user
         # Set up any necessary data for the tests
-        pass
+
+        self.book = Book.objects.create(
+            title='Test Book',
+            author=self.user,
+            publication_year=2023
+        )
 
     def test_get_queryset_with_author_filter(self):
         # Test filtering by author name
