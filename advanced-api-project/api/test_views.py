@@ -1,6 +1,6 @@
-from django.test import TestCase
+from django.test import APITestCase
 
-class BookListViewTestCase(TestCase):
+class BookListViewTestCase(APITestCase):
     def setUp(self):
         # Set up any necessary data for the tests
         pass
