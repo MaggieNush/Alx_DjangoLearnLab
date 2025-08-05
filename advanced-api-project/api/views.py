@@ -4,7 +4,7 @@ from .models import Book
 from rest_framework.permissions import IsAuthenticatedOrReadOnly, IsAuthenticated
 from django.core.exceptions import PermissionDenied
 from django_filters import rest_framework as filters
-from rest_framework.filters import SearchFilter
+from rest_framework import filters
 
 class BookListView(generics.ListAPIView):
     """
