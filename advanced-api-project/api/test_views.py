@@ -1,0 +1,24 @@
+from django.test import TestCase
+
+class BookListViewTestCase(TestCase):
+    def setUp(self):
+        # Set up any necessary data for the tests
+        pass
+
+    def test_get_queryset_with_author_filter(self):
+        # Test filtering by author name
+        response = self.client.get('/api/books/', {'author': 'Some Author'})
+        self.assertEqual(response.status_code, 200)
+        # Add assertions to check if the response contains the expected books
+
+    def test_get_queryset_with_title_filter(self):
+        # Test filtering by title
+        response = self.client.get('/api/books/', {'title': 'Some Title'})
+        self.assertEqual(response.status_code, 200)
+        # Add assertions to check if the response contains the expected books
+
+    def test_get_queryset_with_publication_year_filter(self):
+        # Test filtering by publication year
+        response = self.client.get('/api/books/', {'publication_year': '2023'})
+        self.assertEqual(response.status_code, 200)
+        # Add assertions to check if the response contains the expected books
