@@ -3,6 +3,7 @@ from rest_framework import generics
 from .serializers import BookSerializer
 from .models import Book
 from rest_framework.permissions import IsAuthenticatedOrReadOnly, IsAuthenticated
+from django.core.exceptions import PermissionDenied
 
 class BookListView(generics.ListAPIView):
     """
@@ -11,6 +12,7 @@ class BookListView(generics.ListAPIView):
     """
     queryset = Book.objects.all()
     serializer_class = BookSerializer
+    permission_classes = [IsAuthenticatedOrReadOnly]
 
 class BookDetailView(generics.RetrieveAPIView):
     """
@@ -18,6 +20,7 @@ class BookDetailView(generics.RetrieveAPIView):
     """
     queryset = Book.objects.all()
     serializer_class = BookSerializer
+    permission_classes = [IsAuthenticatedOrReadOnly]
 
 class BookCreateView(generics.CreateAPIView):
     """
@@ -25,6 +28,16 @@ class BookCreateView(generics.CreateAPIView):
     """
     queryset = Book.objects.all()
     serializer_class = BookSerializer
+    permission_classes = [IsAuthenticated]
+
+    def perform_create(self, serializer):
+        return super().perform_create(serializer)(self, serializer)
+    
+    # Only authenticated users can create a book
+        if not self.request.user.has_perm('api.add_book'):
+            raise PermissionDenied("You do not have permission to create a book.")
+
+        serializer.save(author=self.request.user)  
 
 class BookUpdateView(generics.UpdateAPIView):
     """
@@ -32,6 +45,17 @@ class BookUpdateView(generics.UpdateAPIView):
     """
     queryset = Book.objects.all()
     serializer_class = BookSerializer
+    permission_classes = [IsAuthenticated]
+
+    def perform_update(self, serializer):
+        # Example: Only allow users with a specific permission
+        if not self.request.user.has_perm('api.change_book'):
+            raise PermissionDenied("You do not have permission to update this book.")
+        serializer.save()
+
+    def get_queryset(self):
+        # Example: Only allow users to update books they created
+        return Book.objects.filter(created_by=self.request.user)
 
 class BookDeleteView(generics.DestroyAPIView):
     """
@@ -39,3 +63,4 @@ class BookDeleteView(generics.DestroyAPIView):
     """
     queryset = Book.objects.all()
     serializer_class = BookSerializer
+    permission_classes = [IsAuthenticated] # Only authenticated users can delete a book
