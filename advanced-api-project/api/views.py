@@ -1,18 +1,41 @@
-from django.shortcuts import render
 from rest_framework import generics
 from .serializers import BookSerializer
 from .models import Book
 from rest_framework.permissions import IsAuthenticatedOrReadOnly, IsAuthenticated
 from django.core.exceptions import PermissionDenied
+from django_filters import rest_framework as filters
 
 class BookListView(generics.ListAPIView):
     """
     View to retrieve all books.
     This view uses the BookSerializer to serialize the book data.
     """
+
+    # This view allows for searching and filtering of books by author name, title, and publication year.
+    # It also supports ordering by title, author name, and publication year.
     queryset = Book.objects.all()
     serializer_class = BookSerializer
     permission_classes = [IsAuthenticatedOrReadOnly]
+    search_fields = ['title', 'author__name', 'publication_year']
+    filter_backends = (filters.OrderingFilter)
+    ordering_fields = ['title', 'author__name', 'publication_year']
+
+    def get_queryset(self):
+        """
+        Optionally filter the books by author name, title and publication year if provided in the query parameters.
+        """
+        queryset = super().get_queryset()
+        author_name = self.request.query_params.get('author', None)
+        title = self.request.query_params.get('title', None)
+        publication_year = self.request.query_params.get('publication_year', None)
+
+        if author_name:
+            queryset = queryset.filter(author__name__icontains=author_name)
+        if title:
+            queryset = queryset.filter(title__icontains=title)
+        if publication_year:
+            queryset = queryset.filter(publication_date__year=publication_year)
+        return queryset
 
 class BookDetailView(generics.RetrieveAPIView):
     """
