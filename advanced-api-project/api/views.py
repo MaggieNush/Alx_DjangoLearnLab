@@ -13,7 +13,7 @@ class BookListView(generics.ListAPIView):
     """
 
     # This view allows for searching and filtering of books by author name, title, and publication year.
-    # It also supports ordering by title, author name, and publication year.
+    # It also supports ordering by title, author's name, and publication year.
     queryset = Book.objects.all()
     serializer_class = BookSerializer
     permission_classes = [IsAuthenticatedOrReadOnly]
