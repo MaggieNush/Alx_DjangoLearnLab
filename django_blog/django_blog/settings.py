@@ -27,6 +27,10 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
+USER = 'your_username'
+
+PORT = 1234
+
 
 # Application definition
 
