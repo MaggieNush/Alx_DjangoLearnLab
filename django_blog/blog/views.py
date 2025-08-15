@@ -1,27 +1,45 @@
 from django.shortcuts import render, redirect
-from django.contrib.auth import authenticate, login, logout
-from django.contrib import messages
-from django.contrib.auth.models import User
+from django.contrib.auth import login, authenticate, logout
+from .forms import CustomUserCreationForm, ProfileEditForm
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth.views import LoginView, LogoutView
 
 
-def login_page(request):
+def home_view(request):
+    return render(request, 'registration/home.html')
+
+def register(request):
     if request.method == 'POST':
-        username = request.POST.get('username')
-        password = request.POST.get('password')
-
-        if not User.objects.filter(username=username).exists():
-            messages.error(request, 'User does not exist.')
-            return render(request, 'login.html')
+        form = CustomUserCreationForm(request.POST)
+        if form.is_valid():
+            user = form.save()
+            login(request, user)
+            return redirect('blog:home')
         
-        user = authenticate(username=username, password=password)
+    else:
+        form = CustomUserCreationForm()
 
-        if user is None:
-            messages.error(request, 'Invalid username or password.')
-            return redirect('home')
-        
-        return render(request, 'login.html')
+    return render(request, 'registration/register.html', {'form': form})
     
-def logout_page(request):
+@login_required
+def profile(request):
+    return render(request, 'registration/profile.html')
+
+def profile_edit(request):
+    if request.method == 'POST':
+        form = ProfileEditForm(request.POST, instance=request.user)
+        if form.is_valid():
+            form.save()
+            return redirect('blog:profile')
+
+    else:
+        form = ProfileEditForm(instance=request.user)
+
+    return render(request, 'registration/profile_edit.html', {'form': form})
+
+def login_user(request):
+    return LoginView.as_view(template_name='registration/login.html')(request)
+
+def logout_user(request):
     logout(request)
-    messages.success(request, 'You have been logged out successfully.')
-    return redirect('home')
+    return redirect('blog:home')
