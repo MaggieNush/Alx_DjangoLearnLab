@@ -1,5 +1,5 @@
 """
-URL configuration for advanced_api_project project.
+URL configuration for my_project project.
 
 The `urlpatterns` list routes URLs to views. For more information please see:
     https://docs.djangoproject.com/en/5.1/topics/http/urls/
@@ -16,7 +16,11 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
+from django.urls import path
+from my_app.views import BookListCreateAPIView
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path("api/books/", BookListCreateAPIView.as_view(),
+         name="book_list_create")
 ]
