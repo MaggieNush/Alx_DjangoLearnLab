@@ -5,7 +5,7 @@ from .views import (
     CommentUpdateView, PostListView, 
     PostDetailView, PostCreateView, 
     PostUpdateView, PostDeleteView, 
-    TaggedPostListView, search_posts,
+    PostByTagListView, search_posts,
 )
 
 app_name = 'blog'
@@ -23,7 +23,7 @@ urlpatterns = [
     
     # URL for viewing all posts with a specific tag
     # Uses a special path converter provided by Django
-    path('tags/<slug:tag_slug>/', TaggedPostListView.as_view(), name='posts_by_tag'),
+    path('tags/<slug:tag_slug>/', PostByTagListView.as_view(), name='posts_by_tag'),
 
     path('', views.home_view, name='home'),
 
