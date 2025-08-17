@@ -7,7 +7,7 @@ from django.views.generic import ListView, DetailView, CreateView, UpdateView, D
 from .models import Post, Comment
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from .forms import PostForm, CommentForm
-from django.urls import reverse_lazy
+from django.urls import reverse, reverse_lazy
 
 def home_view(request):
     return render(request, 'blog/home.html')
@@ -124,3 +124,29 @@ class CommentCreateView(LoginRequiredMixin, CreateView):
         # The parent method saves the form and handles the redirect.
         return super().form_valid(form)
     
+class CommentUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
+    model = Comment
+    form_class = CommentForm
+    template_name = 'blog/comment_form.html'
+
+    def get_success_url(self):
+        # Redirect to the post detail page after updating the comment
+        return reverse('blog:post_detail', kwargs={'pk': self.object.post.pk})
+
+    def test_func(self):
+        # Ensure only the comment's author can update the comment
+        comment = self.get_object()
+        return self.request.user == comment.author
+    
+class CommentDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
+    model = Comment
+    template_name = 'blog/comment_confirm_delete.html'
+
+    def get_success_url(self):
+        # Redirect to the post detail page after deleting the comment
+        return reverse('blog:post_detail', kwargs={'pk': self.object.post.pk})
+
+    def test_func(self):
+        # Ensure only the comment's author can delete the comment
+        comment = self.get_object()
+        return self.request.user == comment.author
