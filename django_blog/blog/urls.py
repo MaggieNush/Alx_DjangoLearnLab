@@ -1,6 +1,12 @@
 from . import views
 from django.urls import path, include
-from .views import CommentCreateView, CommentDeleteView, CommentUpdateView, PostListView, PostDetailView, PostCreateView, PostUpdateView, PostDeleteView
+from .views import (
+    CommentCreateView, CommentDeleteView, 
+    CommentUpdateView, PostListView, 
+    PostDetailView, PostCreateView, 
+    PostUpdateView, PostDeleteView, 
+    TaggedPostListView, search_posts,
+)
 
 app_name = 'blog'
 
@@ -12,6 +18,12 @@ urlpatterns = [
 
     path('post/<int:pk>/update/', PostUpdateView.as_view(), name='post_update'),
     path('post/<int:pk>/delete/', PostDeleteView.as_view(), name='post_delete'),
+    # URL for searching posts
+    path('search/', search_posts, name='search_posts'),
+    
+    # URL for viewing all posts with a specific tag
+    # Uses a special path converter provided by Django
+    path('tags/<slug:tag_slug>/', TaggedPostListView.as_view(), name='posts_by_tag'),
 
     path('', views.home_view, name='home'),
 

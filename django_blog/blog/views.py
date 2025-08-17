@@ -8,6 +8,7 @@ from .models import Post, Comment
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from .forms import PostForm, CommentForm
 from django.urls import reverse, reverse_lazy
+from django.db.models import Q
 
 def home_view(request):
     return render(request, 'blog/home.html')
@@ -150,3 +151,33 @@ class CommentDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
         # Ensure only the comment's author can delete the comment
         comment = self.get_object()
         return self.request.user == comment.author
+    
+# Tag-filtered view: Displays posts with a specific tag
+class TaggedPostListView(ListView):
+    model = Post
+    template_name = 'blog/post_list.html'
+    context_object_name = 'posts'
+
+    def get_queryset(self):
+        # We get the tag_slug from the URL.
+        tag_slug = self.kwargs['tag_slug']
+        # We filter the queryset to only include posts that have this tag.
+        return Post.objects.filter(tags__slug__in=[tag_slug])
+
+# Search view: A function-based view for handling search queries
+def search_posts(request):
+    query = request.GET.get('q', '')  # Get the search query from the URL parameter 'q'
+    results = Post.objects.all()
+
+    if query:
+        # Use Q objects for OR queries on multiple fields.
+        # __icontains is a case-insensitive lookup.
+        results = Post.objects.filter(
+            Q(title__icontains=query) | Q(content__icontains=query) | Q(tags__name__icontains=query)
+        ).distinct()
+    
+    context = {
+        'query': query,
+        'posts': results,
+    }
+    return render(request, 'blog/search_results.html', context)
