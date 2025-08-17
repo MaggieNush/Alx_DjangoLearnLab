@@ -3,8 +3,10 @@ from django.contrib.auth import login, authenticate, logout
 from .forms import CustomUserCreationForm, ProfileEditForm
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.views import LoginView, LogoutView
-from django.views.generic import ListView, DetailView
+from django.views.generic import ListView, DetailView, CreateView, DeleteView
 from .models import Post
+from django.contrib.auth.mixins import LoginRequiredMixin
+from .forms import PostForm
 
 def home_view(request):
     return render(request, 'blog/home.html')
@@ -60,3 +62,18 @@ class PostDetailView(DetailView):
     model = Post
     template_name = 'blog/post_detail.html'
     context_object_name = 'post'
+
+class PostCreateView(LoginRequiredMixin, CreateView):
+    """
+    Allows users to create new blog posts.
+    """
+    model = Post
+    form_class = PostForm
+    template_name = 'blog/post_form.html'
+
+    def form_valid(self, form): # Overrides the form_valid method to automatically set the auther's name
+        # Tells the form not to commit to the database
+        form.instance.author = self.request.user
+        # Saves the form before proceeding with the rest of the logic
+        return super().form_valid(form)
+    

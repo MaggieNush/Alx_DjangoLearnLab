@@ -22,7 +22,7 @@ class ProfileEditForm(UserChangeForm):
         super(ProfileEditForm, self).__init__(*args, **kwargs)
         del self.fields['password']
 
-# class PostForm(forms.ModelForm):
-#     class Meta:
-#         model = Post
-#         fields = ['title', 'content', 'image']
+class PostForm(forms.ModelForm):
+    class Meta:
+        model = Post
+        fields = ['title', 'content']
