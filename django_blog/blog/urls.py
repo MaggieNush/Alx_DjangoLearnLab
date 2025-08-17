@@ -1,9 +1,12 @@
 from . import views
 from django.urls import path, include
+from .views import PostListView, PostDetailView
 
 app_name = 'blog'
 
 urlpatterns = [
+    path('', PostListView.as_view(), name='post_list'),
+    path('<int:pk>/', PostDetailView.as_view(), name='post_detail'),
     path('', views.home_view, name='home'),
 
     path('register/', views.register, name='register'),
