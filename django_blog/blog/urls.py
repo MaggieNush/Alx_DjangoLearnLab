@@ -22,7 +22,7 @@ urlpatterns = [
     path('logout/', views.logout_user, name='logout'),
     path('profile/edit/', views.profile_edit, name='edit_profile'),
 
-    path('post/<int:post_id>/comments/new/', CommentCreateView.as_view(), name='comment_create'),
+    path('post/<int:pk>/comments/new/', CommentCreateView.as_view(), name='comment_create'),
     path('comment/<int:pk>/update/', CommentUpdateView.as_view(), name='comment_update'),
     path('comment/<int:pk>/delete/', CommentDeleteView.as_view(), name='comment_delete'),
 
