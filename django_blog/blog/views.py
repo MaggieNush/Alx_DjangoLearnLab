@@ -1,12 +1,13 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import login, authenticate, logout
 from .forms import CustomUserCreationForm, ProfileEditForm
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.views import LoginView, LogoutView
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
-from .models import Post
+from .models import Post, Comment
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
-from .forms import PostForm
+from .forms import PostForm, CommentForm
+from django.urls import reverse_lazy
 
 def home_view(request):
     return render(request, 'blog/home.html')
@@ -61,7 +62,12 @@ class PostDetailView(DetailView):
     """
     model = Post
     template_name = 'blog/post_detail.html'
-    context_object_name = 'post'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['comments'] = Comment.objects.filter(post=self.object).order_by('-created_at')
+        context['form'] = CommentForm()
+        return context
 
 class PostCreateView(LoginRequiredMixin, CreateView):
     """
@@ -102,3 +108,19 @@ class PostDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
         # Ensures only the post's author can delete the blog post
         post = self.get_object()
         return self.request.user == post.author
+    
+class CommentCreateView(LoginRequiredMixin, CreateView):
+    model = Comment
+    form_class = CommentForm
+    
+    def form_valid(self, form):
+        # We get the post object using the 'post_id' from the URL.
+        post = get_object_or_404(Post, pk=self.kwargs.get('post_id'))
+
+        # We manually set the post and author fields on the comment instance.
+        form.instance.post = post
+        form.instance.author = self.request.user
+
+        # The parent method saves the form and handles the redirect.
+        return super().form_valid(form)
+    
