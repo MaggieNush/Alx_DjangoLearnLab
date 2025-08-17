@@ -3,9 +3,9 @@ from django.contrib.auth import login, authenticate, logout
 from .forms import CustomUserCreationForm, ProfileEditForm
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.views import LoginView, LogoutView
-from django.views.generic import ListView, DetailView, CreateView, DeleteView
+from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 from .models import Post
-from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from .forms import PostForm
 
 def home_view(request):
@@ -77,3 +77,28 @@ class PostCreateView(LoginRequiredMixin, CreateView):
         # Saves the form before proceeding with the rest of the logic
         return super().form_valid(form)
     
+class PostUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
+    """"
+    Allows user to update their blog posts.
+    """
+    model = Post
+    form_class = PostForm
+    template_name = 'blog/post_form.html'
+
+    def test_func(self):
+        # The functions return True if the user is the post's author
+        post = self.get_object()
+        return self.request.user == post.author
+
+class PostDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
+    """"
+    Allows only users to delete their own blog posts
+    """
+    model = Post
+    template_name = 'blog/post_confirm_delete.html'
+    success_url = '/' # Returns back to the post_list url
+
+    def test_func(self):
+        # Ensures only the post's author can delete the blog post
+        post = self.get_object()
+        return self.request.user == post.author
