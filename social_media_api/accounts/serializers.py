@@ -5,6 +5,7 @@ from rest_framework.authtoken.models import Token
 User = get_user_model()
 
 class RegistrationSerializer(serializers.ModelSerializer):
+    # Copy and paste this exact line
     password2 = serializers.CharField(style={'input_type': 'password'}, write_only=True)
 
     class Meta:
@@ -13,7 +14,6 @@ class RegistrationSerializer(serializers.ModelSerializer):
         extra_kwargs = {
             'password': {'write_only': True},
         }
-
 
     def validate(self, data):
         if data['password'] != data['password2']:
@@ -27,7 +27,7 @@ class RegistrationSerializer(serializers.ModelSerializer):
         )
         user.set_password(validated_data['password'])
         user.save()
-        Token.objects.create(user=user)  # Create a token for the user
+        Token.objects.create(user=user)
         return user
     
 class CustomUserSerializer(serializers.ModelSerializer):
