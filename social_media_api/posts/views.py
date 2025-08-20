@@ -72,7 +72,7 @@ class LikeToggleView(APIView):
         user = request.user
         
         # Check if the user has already liked the post.
-        like, created = Like.objects.get_or_create(post=post, user=request.user)
+        like, created = Like.objects.get_or_create(user=request.user, post=post)
 
         if created:
             # If a new like was created, send a notification.
