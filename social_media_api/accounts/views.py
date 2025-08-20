@@ -1,5 +1,7 @@
 from rest_framework import generics, status
 from rest_framework.response import Response
+from rest_framework.permissions import IsAuthenticated
+from django.shortcuts import get_object_or_404
 from rest_framework.views import APIView
 from rest_framework.authtoken.models import Token
 from django.contrib.auth import get_user_model, authenticate
@@ -50,3 +52,35 @@ class ProfileView(APIView):
         serializer = CustomUserSerializer(request.user)
         return Response(serializer.data, status=status.HTTP_200_OK)
     
+
+class FollowToggleView(APIView):
+    # This ensures only authenticated users can access this view.
+    permission_classes = [IsAuthenticated]
+
+    def post(self, request, user_id):
+        # We get the user to be followed/unfollowed from the URL parameter.
+        target_user = get_object_or_404(User, id=user_id)
+        current_user = request.user
+
+        # A user cannot follow themselves.
+        if target_user == current_user:
+            return Response(
+                {'error': 'You cannot follow or unfollow yourself.'}, 
+                status=status.HTTP_400_BAD_REQUEST
+            )
+
+        # Check if the current user is already following the target user.
+        if current_user.following.filter(id=target_user.id).exists():
+            # If so, unfollow them.
+            current_user.following.remove(target_user)
+            return Response(
+                {'message': f'You have unfollowed {target_user.username}.'}, 
+                status=status.HTTP_200_OK
+            )
+        else:
+            # If not, follow them.
+            current_user.following.add(target_user)
+            return Response(
+                {'message': f'You are now following {target_user.username}.'}, 
+                status=status.HTTP_200_OK
+            )
