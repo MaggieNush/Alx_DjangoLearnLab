@@ -5,6 +5,8 @@ from django.shortcuts import get_object_or_404
 from rest_framework.views import APIView
 from rest_framework.authtoken.models import Token
 from django.contrib.auth import get_user_model, authenticate
+
+from posts import permissions
 from .serializers import RegistrationSerializer, CustomUserSerializer
 from .models import CustomUser
 
@@ -55,7 +57,7 @@ class ProfileView(APIView):
 
 class FollowToggleView(APIView):
     # This ensures only authenticated users can access this view.
-    permission_classes = [IsAuthenticated]
+    permission_classes = [permissions.IsAuthenticated]
 
     def post(self, request, user_id):
         # We get the user to be followed/unfollowed from the URL parameter.
