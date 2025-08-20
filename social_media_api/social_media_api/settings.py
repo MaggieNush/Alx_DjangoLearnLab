@@ -25,6 +25,8 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
+PORT = config('PORT', default=8000, cast=int)
+
 ALLOWED_HOSTS = []
 
 STATIC_URL = '/static/'
