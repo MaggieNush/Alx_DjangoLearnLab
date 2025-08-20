@@ -17,3 +17,27 @@ Query Parameters: Document pagination (?page=<number>) and filtering (?title=<st
 Example Request: A curl command or a JSON body example.
 
 Example Response: A JSON response body.
+
+Follow/Unfollow Endpoint:
+
+URL: /api/accounts/follow/<int:user_id>/
+
+Method: POST
+
+Description: Toggles the follow status for a user.
+
+Permissions: IsAuthenticated
+
+Example: Provide a curl example or a Postman request screenshot.
+
+Feed Endpoint:
+
+URL: /api/posts/feed/
+
+Method: GET
+
+Description: Returns an aggregated, chronological feed of posts from all users the authenticated user is following.
+
+Permissions: IsAuthenticated
+
+Example: Provide an example of the JSON response.

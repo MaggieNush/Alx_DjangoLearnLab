@@ -6,12 +6,12 @@ from rest_framework.views import APIView
 from rest_framework.authtoken.models import Token
 from django.contrib.auth import get_user_model, authenticate
 from .serializers import RegistrationSerializer, CustomUserSerializer
+from .models import CustomUser
 
-User = get_user_model()
 
-class RegistrationView(generics.CreateAPIView):
+class RegistrationView(generics.GenericAPIView):
     # Automatically handles user creation
-    queryset = User.objects.all()
+    queryset = CustomUser.objects.all()
     serializer_class = RegistrationSerializer
     permission_classes = [] # No permission needed for registration
 
@@ -59,7 +59,7 @@ class FollowToggleView(APIView):
 
     def post(self, request, user_id):
         # We get the user to be followed/unfollowed from the URL parameter.
-        target_user = get_object_or_404(User, id=user_id)
+        target_user = get_object_or_404(CustomUser, id=user_id)
         current_user = request.user
 
         # A user cannot follow themselves.
