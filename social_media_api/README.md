@@ -41,3 +41,27 @@ Description: Returns an aggregated, chronological feed of posts from all users t
 Permissions: IsAuthenticated
 
 Example: Provide an example of the JSON response.
+
+Like/Unlike Endpoint:
+
+URL: /api/posts/<int:pk>/like/
+
+Method: POST
+
+Description: Toggles the "like" status on a post for the authenticated user. If a like exists, it is removed; otherwise, a new like is created.
+
+Permissions: IsAuthenticated
+
+Example: Provide a curl example for the POST request.
+
+Notifications Endpoint:
+
+URL: /api/notifications/
+
+Method: GET
+
+Description: Retrieves a list of all notifications for the authenticated user, ordered chronologically.
+
+Permissions: IsAuthenticated
+
+Example: Provide an example of the JSON response body showing a liked notification.

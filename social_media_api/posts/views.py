@@ -1,6 +1,13 @@
 from rest_framework import permissions, viewsets
 from django_filters.rest_framework import DjangoFilterBackend
-from .models import Post, Comment
+from streamlit import status
+from rest_framework.views import APIView
+from django_filters.rest_framework import DjangoFilterBackend
+from django.contrib.contenttypes.models import ContentType
+from django.shortcuts import get_object_or_404
+from notifications.models import Notification
+from .models import Post, Comment, Like
+from rest_framework.response import Response
 from .serializers import PostSerializer, CommentSerializer
 from .permissions import IsOwnerOrReadOnly
 from rest_framework import generics
@@ -57,3 +64,37 @@ class FeedView(generics.ListAPIView):
         queryset = Post.objects.filter(author__in=following_users).order_by('-created_at')
         
         return queryset
+    
+class LikeToggleView(APIView):
+    permission_classes = [permissions.IsAuthenticated]
+
+    def post(self, request, pk):
+        post = get_object_or_404(Post, pk=pk)
+        user = request.user
+        
+        # Check if the user has already liked the post.
+        like = Like.objects.filter(post=post, user=user).first()
+        
+        if like:
+            # If a like exists, delete it (unliking).
+            like.delete()
+            return Response(
+                {'message': 'Post unliked successfully.'},
+                status=status.HTTP_200_OK
+            )
+        else:
+            # If no like exists, create one (liking).
+            Like.objects.create(post=post, user=user)
+
+            # Create a notification for the post's author.
+            Notification.objects.create(
+                recipient=post.author,
+                actor=user,
+                verb='liked',
+                content_type=ContentType.objects.get_for_model(Post),
+                object_id=post.id
+            )
+            return Response(
+                {'message': 'Post liked successfully.'},
+                status=status.HTTP_201_CREATED
+            )

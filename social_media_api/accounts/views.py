@@ -5,7 +5,6 @@ from django.shortcuts import get_object_or_404
 from rest_framework.views import APIView
 from rest_framework.authtoken.models import Token
 from django.contrib.auth import get_user_model, authenticate
-
 from posts import permissions
 from .serializers import RegistrationSerializer, CustomUserSerializer
 from .models import CustomUser
@@ -56,7 +55,7 @@ class ProfileView(APIView):
     
 
 class FollowView(APIView):
-    permission_classes = [permissions.IsAuthenticated]
+    permission_classes = [IsAuthenticated]
 
     def post(self, request, user_id):
         target_user = get_object_or_404(CustomUser, id=user_id)
@@ -83,7 +82,7 @@ class FollowView(APIView):
 
 
 class UnfollowView(APIView):
-    permission_classes = [permissions.IsAuthenticated]
+    permission_classes = [IsAuthenticated]
 
     def post(self, request, user_id):
         target_user = get_object_or_404(CustomUser, id=user_id)
