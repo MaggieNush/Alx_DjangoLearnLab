@@ -55,7 +55,7 @@ class ProfileView(APIView):
     
 
 class FollowView(APIView):
-    permission_classes = [IsAuthenticated]
+    permission_classes = [permissions.IsAuthenticated]
 
     def post(self, request, user_id):
         target_user = get_object_or_404(CustomUser, id=user_id)
@@ -82,7 +82,7 @@ class FollowView(APIView):
 
 
 class UnfollowView(APIView):
-    permission_classes = [IsAuthenticated]
+    permission_classes = [permissions.IsAuthenticated]
 
     def post(self, request, user_id):
         target_user = get_object_or_404(CustomUser, id=user_id)

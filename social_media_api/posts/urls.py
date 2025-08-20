@@ -15,5 +15,4 @@ urlpatterns = [
     path('feed/', FeedView.as_view(), name='feed'),
     path('posts/<int:pk>/like/', LikeToggleView.as_view(), name='post-like-toggle'),
     path('posts/<int:pk>/unlike/', LikeToggleView.as_view(), name='post-unlike-toggle'),
-
 ]
